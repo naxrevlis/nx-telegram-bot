@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "nx-telegram-bot"
+version = "0.1.0"
+description = ""
+authors = ["Maksim Panin <me@naxrevlis.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-telegram-bot = {version = "^13.14", allow-prereleases = true}
+python-dotenv = "^0.21.0"
+pika = "^1.3.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
