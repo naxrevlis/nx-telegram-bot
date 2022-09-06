@@ -1,0 +1,51 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: test
+    image: python
+    commands:
+      - python -m pip install poetry
+      - python -m poetry install
+      - python -m poetry run pytest
+
+  - name: docker
+    image: plugins/docker
+    settings:
+      insecure: true
+      repo: 100.90.71.128:8082/nax/nx_telegram_bot
+      registry: 100.90.71.128:8082
+      username:
+        from_secret: nexus_username
+      password:
+        from_secret: nexus_password
+
+  - name: deploy-ssh
+    image: appleboy/drone-ssh
+    environment:
+      NEXUS_USER:
+        from_secret: nexus_username
+      NEXUS_PASSWORD:
+        from_secret: nexus_password
+      ENV_VAR:
+        from_secret: env_file_tg
+    settings:
+      host:
+        - 100.90.71.128
+      username: nax
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 2m
+      envs: [ NEXUS_USER, NEXUS_PASSWORD, ENV_VAR ]
+      script:
+        - export PATH="/usr/local/bin:$PATH"
+        - touch env.config
+        - echo $ENV_VAR >> env.config
+        - docker login -u $NEXUS_USER -p $NEXUS_PASSWORD 100.90.71.128:8082
+        - docker pull 100.90.71.128:8082/nax/nx_telegram_bot:latest
+        - docker image prune -f
+        - docker stop nx_telegram_bot
+        - docker container prune -f
+        - docker run -d --env-file env.config --name nx_telegram_bot 100.90.71.128:8082/nax/nx_telegram_bot:latest
+        - rm env.config

@@ -1,6 +1,5 @@
-from email import message
 from telegram.ext import Updater
-from nx_telegram_bot.config import read_config_from_env
+from config import read_config_from_env
 import logging
 import pika
 import os
