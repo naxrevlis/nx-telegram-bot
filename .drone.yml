@@ -47,5 +47,5 @@ steps:
         - docker image prune -f
         - docker stop nx_telegram_bot
         - docker container prune -f
-        - docker run -d --env-file env.config --name nx_telegram_bot 100.90.71.128:8082/nax/nx_telegram_bot:latest
+        - docker run -d --env-file env.config --restart always --name nx_telegram_bot 100.90.71.128:8082/nax/nx_telegram_bot:latest
         - rm env.config
