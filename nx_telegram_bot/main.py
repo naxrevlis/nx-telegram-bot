@@ -1,10 +1,12 @@
-from telegram.ext import Updater
-from config import read_config_from_env
-import logging
-import pika
-import os
 import json
+import logging
+import os
 import sys
+
+import pika
+from telegram.ext import Updater
+
+from config import read_config_from_env
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
@@ -18,7 +20,7 @@ def callback(ch, method, properties, body):
     """Callback function"""
     logging.info(" [x] Received %r" % body)
     body = json.loads(body.replace(b"'", b'"'))
-    message = f"Сегодня {body['days_since_first_meet']} дней с первой встречи или {body['days_since_first_meet'] * 24} часов или {body['days_since_first_meet']//7} недель"
+    message = f"{body['message']}"
     updater.bot.send_message(chat_id=config['chat_id'], text=message)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
