@@ -19,6 +19,9 @@ steps:
         from_secret: nexus_username
       password:
         from_secret: nexus_password
+    when:
+      branch:
+        - main
 
   - name: deploy-ssh
     image: appleboy/drone-ssh
@@ -49,3 +52,15 @@ steps:
         - docker container prune -f
         - docker run -d --env-file env.config -v /etc/localtime:/etc/localtime:ro --restart always --name nx_telegram_bot 100.90.71.128:8082/nax/nx_telegram_bot:latest
         - rm env.config
+    when:
+      branch:
+        - main
+
+  - name: send telegram notification
+    image: appleboy/drone-telegram
+    settings:
+      token: 
+        from_secret: telegram_nxbot_token
+      to: 
+        from_secret: telegram_alistro_user_id
+      message_file: message_done_file.tpl
