@@ -16,7 +16,7 @@ steps:
         from_secret: telegram_nxbot_token
       to:
         from_secret: telegram_alistro_user_id
-      message_file: message_drone_test.tpl
+      message_file: drone_templates/message_drone_test.tpl
 
   - name: docker
     image: plugins/docker
@@ -39,7 +39,7 @@ steps:
         from_secret: telegram_nxbot_token
       to:
         from_secret: telegram_alistro_user_id
-      message_file: message_drone_docker_build.tpl
+      message_file: drone_templates/message_drone_docker_build.tpl
 
   - name: deploy-ssh
     image: appleboy/drone-ssh
@@ -81,4 +81,4 @@ steps:
         from_secret: telegram_nxbot_token
       to:
         from_secret: telegram_alistro_user_id
-      message_file: message_drone_deploy.tpl
+      message_file: drone_templates/message_drone_deploy.tpl
