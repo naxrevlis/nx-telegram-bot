@@ -8,7 +8,8 @@ def read_config_from_env():
     load_dotenv()
     return {
         "tg_bot_token": os.getenv("TG_NX_TOKEN"),
-        "chat_id": os.getenv("TG_NX_CHAT_ID"),
+        "chat_id": -1001608131711,
+        #"chat_id": os.getenv("TG_NX_CHAT_ID"),
         "host": os.getenv("RMQ_HOST"),
         "port": os.getenv("RMQ_PORT"),
         "user": os.getenv("RMQ_USER"),
